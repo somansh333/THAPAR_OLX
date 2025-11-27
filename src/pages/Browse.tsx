@@ -59,22 +59,23 @@ const Browse = () => {
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">Browse Products</h1>
         
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+        <div className="flex flex-col md:flex-row gap-4 mb-8 ">
+          <div className="relative flex-1 ">
+            <Search className="absolute left-3 top-3 h-4 w-4 " />
             <Input
               placeholder="Search products..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
+              className="pl-10 bg-color-white"
             />
           </div>
+          <div>
           <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-            <SelectTrigger className="w-full md:w-[200px]">
+            <SelectTrigger className="w-full md:w-[200px] bg-color-white ">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
+            <SelectContent >
+              <SelectItem value="all" >All Categories</SelectItem>
               {categories.map((cat) => (
                 <SelectItem key={cat.id} value={cat.id}>
                   {cat.name}
@@ -82,6 +83,7 @@ const Browse = () => {
               ))}
             </SelectContent>
           </Select>
+          </div>
         </div>
 
         {loading ? (

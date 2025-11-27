@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import { z } from "zod";
+import thaparCampus from '@/assets/thapar-campus.jpg'
 
 const listingSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters").max(100),
@@ -98,8 +99,17 @@ const CreateListing = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      <div className="container mx-auto px-4 py-8 max-w-2xl">
+      <div 
+          className="absolute inset-0 bg-cover  bg-center bg-no-repeat z-0 opactiy-50"
+          style={{ backgroundImage: `url(${thaparCampus})` }}
+        ></div>
+      
+      <div className=" relative z-10">
+      
+        <Navbar />
+        <div className="container mx-auto px-4 py-8 max-w-2xl">
+        
+
         <Card>
           <CardHeader>
             <CardTitle>Create New Listing</CardTitle>
@@ -198,6 +208,7 @@ const CreateListing = () => {
             </form>
           </CardContent>
         </Card>
+        </div>
       </div>
     </div>
   );

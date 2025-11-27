@@ -7,8 +7,10 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Browse from "./pages/Browse";
 import CreateListing from "./pages/CreateListing";
+import ProductDetails from "./pages/ProductDetails";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+
 
 const queryClient = new QueryClient();
 
@@ -24,6 +26,7 @@ const App = () => (
           <Route path="/browse" element={<Browse />} />
           <Route path="/create-listing" element={<CreateListing />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

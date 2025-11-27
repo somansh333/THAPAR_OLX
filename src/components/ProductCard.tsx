@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -13,7 +14,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ProductCardProps {
   product: any;
@@ -23,6 +30,8 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, isOwner, onDelete, onStatusChange }: ProductCardProps) => {
+  const navigate = useNavigate(); // ✅ ADD THIS
+
   const conditionColors: Record<string, string> = {
     new: "bg-green-500",
     like_new: "bg-blue-500",
@@ -37,7 +46,10 @@ const ProductCard = ({ product, isOwner, onDelete, onStatusChange }: ProductCard
   };
 
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+    <Card
+      className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+      onClick={() => navigate(`/product/${product.id}`)} // ✅ NAVIGATION
+    >
       <CardHeader className="p-0">
         {product.image_url ? (
           <img
@@ -51,55 +63,75 @@ const ProductCard = ({ product, isOwner, onDelete, onStatusChange }: ProductCard
           </div>
         )}
       </CardHeader>
+
       <CardContent className="p-4">
         <div className="flex justify-between items-start mb-2">
           <h3 className="font-semibold text-lg line-clamp-1">{product.title}</h3>
           <Badge className={statusColors[product.status]}>{product.status}</Badge>
         </div>
+
         <p className="text-muted-foreground text-sm line-clamp-2 mb-3">
           {product.description}
         </p>
+
         <div className="flex justify-between items-center">
           <span className="text-2xl font-bold text-primary">₹{product.price}</span>
           <Badge variant="outline" className={conditionColors[product.condition]}>
             {product.condition?.replace("_", " ")}
           </Badge>
         </div>
+
         {product.categories && (
           <div className="mt-2">
             <Badge variant="secondary">{product.categories.name}</Badge>
           </div>
         )}
+
         {!isOwner && product.profiles && (
           <div className="mt-3 pt-3 border-t">
-            <p className="text-sm text-muted-foreground">Seller: {product.profiles.full_name}</p>
+            <p className="text-sm text-muted-foreground">
+              Seller: {product.profiles.full_name}
+            </p>
             {product.profiles.phone && (
-              <p className="text-sm text-muted-foreground">Contact: {product.profiles.phone}</p>
+              <p className="text-sm text-muted-foreground">
+                Contact: {product.profiles.phone}
+              </p>
             )}
           </div>
         )}
       </CardContent>
+
       {isOwner && (
         <CardFooter className="p-4 pt-0 flex gap-2">
           <Select
             value={product.status}
             onValueChange={(value) => onStatusChange?.(product.id, value)}
           >
-            <SelectTrigger className="flex-1">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="available">Available</SelectItem>
-              <SelectItem value="reserved">Reserved</SelectItem>
-              <SelectItem value="sold">Sold</SelectItem>
-            </SelectContent>
+          <SelectTrigger
+            className="flex-1"
+            onClick={(e) => e.stopPropagation()}   // ✅ CORRECT PLACE
+          >
+        <SelectValue />
+  </SelectTrigger>
+
+  <SelectContent>
+    <SelectItem value="available">Available</SelectItem>
+    <SelectItem value="reserved">Reserved</SelectItem>
+    <SelectItem value="sold">Sold</SelectItem>
+  </SelectContent>
           </Select>
+
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="destructive" size="icon">
+              <Button
+                variant="destructive"
+                size="icon"
+                onClick={(e) => e.stopPropagation()} // ✅ PREVENT OPEN
+              >
                 <Trash2 className="h-4 w-4" />
               </Button>
             </AlertDialogTrigger>
+
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Delete Listing</AlertDialogTitle>
